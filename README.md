@@ -48,6 +48,12 @@ Use only regular convolution:
 python train.py --arch ScaledMNISTNet --deform False --modulation False
 ```
 
+## TODO
+ - [ ] Results of ScaledMNIST experiments
+ - [ ] Initialize weight of modulated deformable convolution based on paper
+ - [ ] Learning rates of offset and modulation are set to different values from other layers.
+ - [ ] DeepLab + DCNv2
+
 <!--
 ## Results
 | Model                                           |   Error rate (%)  | Loss |
