@@ -49,28 +49,19 @@ Use only regular convolution:
 python train.py --arch ScaledMNISTNet --deform False --modulation False
 ```
 
+## Results
+### ScaledMNIST
+| Model                   |   Accuracy (%)    |   Loss   |
+|:------------------------|:-----------------:|:--------:|
+| w/o DCN                 |             97.22 |     0.113|
+| w/  DCN @conv4          |             98.85 |     0.046|
+| w/  DCN @conv3~4        |             98.93 |     0.040|
+| w/  DCNv2 @conv4        |             98.27 |     0.057|
+| w/  DCNv2 @conv3~4      |         **99.09** | **0.031**|
+
 ## TODO
- - [ ] Results of ScaledMNIST experiments
  - [x] Initialize weight of modulated deformable convolution based on paper
  - [x] Learning rates of offset and modulation are set to different values from other layers.
+ - [x] Results of ScaledMNIST experiments
  - [ ] DeepLab + DCNv2
-
-<!--
-## Results
-| Model                                           |   Error rate (%)  | Loss |
-|:------------------------------------------------|:-----------------:|:----:|
-| WideResNet28-10 baseline                        |              4.70 | 0.193|
-| WideResNet28-10 +RICAP                          |              3.94 | 0.162|
-| WideResNet28-10 +Random Erasing                 |              4.36 | 0.163|
-| WideResNet28-10 +Mixup                          |              4.09 | 0.232|
-| WideResNet28-10 baseline (original paper)       |              3.89 |     -|
-| WideResNet28-10 +RICAP (original paper)         |              2.85 |     -|
-| WideResNet28-10 +Random Erasing (original paper)|              4.65 |     -|
-| WideResNet28-10 +Mixup (original paper)         |              3.02 |     -|
-
-Learning curves of loss and accuracy.
-
-![loss](loss.png)
-
-![acc](acc.png)
--->
+ - [ ] Results of VOC segmentation experiments
