@@ -106,9 +106,6 @@ class DeformConv2d(nn.Module):
 
     @staticmethod
     def _get_p_0(h, w, N, dtype):
-        '''
-        stride用の処理いれるならここ
-        '''
         p_0_x, p_0_y = torch.meshgrid(torch.arange(1, h+1), torch.arange(1, w+1))
         p_0_x = torch.flatten(p_0_x).view(1, 1, h, w).repeat(1, N, 1, 1)
         p_0_y = torch.flatten(p_0_y).view(1, 1, h, w).repeat(1, N, 1, 1)

@@ -7,7 +7,7 @@ import torch
 from torchvision import models
 import torchvision
 
-from deform_conv_v2 import DeformConv2d
+from deform_conv_v2 import *
 
 
 class ScaledMNISTNet(nn.Module):

@@ -15,8 +15,8 @@ import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 
 from utils import *
-import archs
-from scaled_mnist import ScaledMNIST
+from scaled_mnist.dataset import ScaledMNIST
+import scaled_mnist.archs as archs
 
 arch_names = archs.__dict__.keys()
 
@@ -26,9 +26,6 @@ def parse_args():
 
     parser.add_argument('--name', default=None,
                         help='model name: (default: arch+timestamp)')
-    parser.add_argument('--dataset', default='scaled_mnist',
-                        choices=['scaled_mnist'],
-                        help='dataset name')
     parser.add_argument('--arch', '-a', metavar='ARCH', default='ScaledMNISTNet',
                         choices=arch_names,
                         help='model architecture: ' +
@@ -150,36 +147,35 @@ def main():
     cudnn.benchmark = True
 
     # data loading code
-    if args.dataset == 'scaled_mnist':
-        transform_train = transforms.Compose([
-            transforms.ToTensor(),
-            transforms.Normalize((0.1307,), (0.3081,))
-        ])
+    transform_train = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize((0.1307,), (0.3081,))
+    ])
 
-        transform_test = transforms.Compose([
-            transforms.ToTensor(),
-            transforms.Normalize((0.1307,), (0.3081,))
-        ])
+    transform_test = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize((0.1307,), (0.3081,))
+    ])
 
-        train_set = ScaledMNIST(
-            train=True,
-            transform=transform_train)
-        train_loader = torch.utils.data.DataLoader(
-            train_set,
-            batch_size=32,
-            shuffle=True,
-            num_workers=8)
+    train_set = ScaledMNIST(
+        train=True,
+        transform=transform_train)
+    train_loader = torch.utils.data.DataLoader(
+        train_set,
+        batch_size=32,
+        shuffle=True,
+        num_workers=8)
 
-        test_set = ScaledMNIST(
-            train=False,
-            transform=transform_train)
-        test_loader = torch.utils.data.DataLoader(
-            test_set,
-            batch_size=32,
-            shuffle=False,
-            num_workers=8)
+    test_set = ScaledMNIST(
+        train=False,
+        transform=transform_train)
+    test_loader = torch.utils.data.DataLoader(
+        test_set,
+        batch_size=32,
+        shuffle=False,
+        num_workers=8)
 
-        num_classes = 10
+    num_classes = 10
 
     # create model
     model = archs.__dict__[args.arch](args, num_classes)
