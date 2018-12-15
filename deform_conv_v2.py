@@ -95,22 +95,24 @@ class DeformConv2d(nn.Module):
         return out
 
     def _get_p_n(self, N, dtype):
-        p_n_x, p_n_y = np.meshgrid(range(-(self.kernel_size-1)//2, (self.kernel_size-1)//2+1),
-                          range(-(self.kernel_size-1)//2, (self.kernel_size-1)//2+1), indexing='ij')
+        p_n_x, p_n_y = torch.meshgrid(
+            torch.arange(-(self.kernel_size-1)//2, (self.kernel_size-1)//2+1),
+            torch.arange(-(self.kernel_size-1)//2, (self.kernel_size-1)//2+1))
         # (2N, 1)
-        p_n = np.concatenate((p_n_x.flatten(), p_n_y.flatten()))
-        p_n = np.reshape(p_n, (1, 2*N, 1, 1))
-        p_n = Variable(torch.from_numpy(p_n).type(dtype), requires_grad=False)
+        p_n = torch.cat([torch.flatten(p_n_x), torch.flatten(p_n_y)], 0)
+        p_n = p_n.view(1, 2*N, 1, 1).type(dtype)
 
         return p_n
 
     @staticmethod
     def _get_p_0(h, w, N, dtype):
-        p_0_x, p_0_y = np.meshgrid(range(1, h+1), range(1, w+1), indexing='ij')
-        p_0_x = p_0_x.flatten().reshape(1, 1, h, w).repeat(N, axis=1)
-        p_0_y = p_0_y.flatten().reshape(1, 1, h, w).repeat(N, axis=1)
-        p_0 = np.concatenate((p_0_x, p_0_y), axis=1)
-        p_0 = Variable(torch.from_numpy(p_0).type(dtype), requires_grad=False)
+        '''
+        stride用の処理いれるならここ
+        '''
+        p_0_x, p_0_y = torch.meshgrid(torch.arange(1, h+1), torch.arange(1, w+1))
+        p_0_x = torch.flatten(p_0_x).view(1, 1, h, w).repeat(1, N, 1, 1)
+        p_0_y = torch.flatten(p_0_y).view(1, 1, h, w).repeat(1, N, 1, 1)
+        p_0 = torch.cat([p_0_x, p_0_y], 1).type(dtype)
 
         return p_0
 
