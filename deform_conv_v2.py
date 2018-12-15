@@ -5,7 +5,7 @@ import numpy as np
 
 
 class DeformConv2d(nn.Module):
-    def __init__(self, inc, outc, kernel_size=3, padding=1, bias=None, modulation=False):
+    def __init__(self, inc, outc, kernel_size=3, padding=1, stride=1, bias=None, modulation=False):
         """
         Args:
             modulation (bool, optional): If True, Modulated Defomable Convolution (Deformable ConvNets v2).
@@ -13,16 +13,17 @@ class DeformConv2d(nn.Module):
         super(DeformConv2d, self).__init__()
         self.kernel_size = kernel_size
         self.padding = padding
+        self.stride = stride
         self.zero_padding = nn.ZeroPad2d(padding)
         self.conv = nn.Conv2d(inc, outc, kernel_size=kernel_size, stride=kernel_size, bias=bias)
 
-        self.p_conv = nn.Conv2d(inc, 2*kernel_size*kernel_size, kernel_size=3, padding=1)
+        self.p_conv = nn.Conv2d(inc, 2*kernel_size*kernel_size, kernel_size=3, padding=1, stride=stride)
         nn.init.constant_(self.p_conv.weight, 0)
         self.p_conv.register_backward_hook(self._set_lr)
 
         self.modulation = modulation
         if modulation:
-            self.m_conv = nn.Conv2d(inc, kernel_size*kernel_size, kernel_size=3, padding=1)
+            self.m_conv = nn.Conv2d(inc, kernel_size*kernel_size, kernel_size=3, padding=1, stride=stride)
             nn.init.constant_(self.m_conv.weight, 0.5)
             self.m_conv.register_backward_hook(self._set_lr)
 
@@ -104,9 +105,10 @@ class DeformConv2d(nn.Module):
 
         return p_n
 
-    @staticmethod
-    def _get_p_0(h, w, N, dtype):
-        p_0_x, p_0_y = torch.meshgrid(torch.arange(1, h+1), torch.arange(1, w+1))
+    def _get_p_0(self, h, w, N, dtype):
+        p_0_x, p_0_y = torch.meshgrid(
+            torch.arange(1, h*self.stride+1, self.stride),
+            torch.arange(1, w*self.stride+1, self.stride))
         p_0_x = torch.flatten(p_0_x).view(1, 1, h, w).repeat(1, N, 1, 1)
         p_0_y = torch.flatten(p_0_y).view(1, 1, h, w).repeat(1, N, 1, 1)
         p_0 = torch.cat([p_0_x, p_0_y], 1).type(dtype)

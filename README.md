@@ -63,5 +63,6 @@ python train.py --arch ScaledMNISTNet --deform False --modulation False
  - [x] Initialize weight of modulated deformable convolution based on paper
  - [x] Learning rates of offset and modulation are set to different values from other layers.
  - [x] Results of ScaledMNIST experiments
+ - [x] Support different stride
  - [ ] DeepLab + DCNv2
  - [ ] Results of VOC segmentation experiments
