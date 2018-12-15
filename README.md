@@ -4,7 +4,7 @@ This repository contains code for **Deformable ConvNets v2 (Modulated Deformable
 
 ## Requirements
 - Python 3.6
-- PyTorch 0.4
+- PyTorch 1.0
 
 ## Usage
 Replace regular convolution (following model's conv2) with modulated deformable convolution:
