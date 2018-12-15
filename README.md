@@ -2,6 +2,14 @@
 This repository contains code for **Deformable ConvNets v2 (Modulated Deformable Convolution)** based on [Deformable ConvNets v2: More Deformable, Better Results
 ](https://arxiv.org/abs/1811.11168) implemented in PyTorch. This implementation of deformable convolution based on [ChunhuanLin/deform_conv_pytorch](https://github.com/ChunhuanLin/deform_conv_pytorch), thanks to ChunhuanLin.
 
+## TODO
+ - [x] Initialize weight of modulated deformable convolution based on paper
+ - [x] Learning rates of offset and modulation are set to different values from other layers
+ - [x] Results of ScaledMNIST experiments
+ - [x] Support different stride
+ - [ ] DeepLab + DCNv2
+ - [ ] Results of VOC segmentation experiments
+
 ## Requirements
 - Python 3.6
 - PyTorch 1.0
@@ -58,11 +66,3 @@ python train.py --arch ScaledMNISTNet --deform False --modulation False
 | w/  DCN @conv3~4        |             98.93 |     0.040|
 | w/  DCNv2 @conv4        |             98.27 |     0.057|
 | w/  DCNv2 @conv3~4      |         **99.09** | **0.031**|
-
-## TODO
- - [x] Initialize weight of modulated deformable convolution based on paper
- - [x] Learning rates of offset and modulation are set to different values from other layers
- - [x] Results of ScaledMNIST experiments
- - [x] Support different stride
- - [ ] DeepLab + DCNv2
- - [ ] Results of VOC segmentation experiments
