@@ -57,12 +57,7 @@ class DeformConv2d(nn.Module):
         q_lb = torch.cat([q_lt[..., :N], q_rb[..., N:]], -1)
         q_rt = torch.cat([q_rb[..., :N], q_lt[..., N:]], -1)
 
-        # (b, h, w, N)
-        mask = torch.cat([p[..., :N].lt(self.padding)+p[..., :N].gt(x.size(2)-1-self.padding),
-                          p[..., N:].lt(self.padding)+p[..., N:].gt(x.size(3)-1-self.padding)], dim=-1).type_as(p)
-        mask = mask.detach()
-        floor_p = p - (p - torch.floor(p))
-        p = p*(1-mask) + floor_p*mask
+        # clip p
         p = torch.cat([torch.clamp(p[..., :N], 0, x.size(2)-1), torch.clamp(p[..., N:], 0, x.size(3)-1)], dim=-1)
 
         # bilinear kernel (b, h, w, N)
