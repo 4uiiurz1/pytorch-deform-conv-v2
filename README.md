@@ -64,7 +64,7 @@ python train.py --arch ScaledMNISTNet --deform False --modulation False
 | Model                   |   Accuracy (%)    |   Loss   |
 |:------------------------|:-----------------:|:--------:|
 | w/o DCN                 |             97.22 |     0.113|
-| w/  DCN @conv4          |             98.85 |     0.046|
-| w/  DCN @conv3~4        |             98.93 |     0.040|
-| w/  DCNv2 @conv4        |             98.27 |     0.057|
-| w/  DCNv2 @conv3~4      |         **99.09** | **0.031**|
+| w/  DCN @conv4          |             98.60 |     0.049|
+| w/  DCN @conv3~4        |             98.95 |     0.035|
+| w/  DCNv2 @conv4        |             98.45 |     0.058|
+| w/  DCNv2 @conv3~4      |         **99.21** | **0.027**|
