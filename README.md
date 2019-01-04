@@ -1,4 +1,4 @@
-# A PyTorch implementation of Deformable ConvNets v2
+# PyTorch implementation of Deformable ConvNets v2
 This repository contains code for **Deformable ConvNets v2 (Modulated Deformable Convolution)** based on [Deformable ConvNets v2: More Deformable, Better Results
 ](https://arxiv.org/abs/1811.11168) implemented in PyTorch. This implementation of deformable convolution based on [ChunhuanLin/deform_conv_pytorch](https://github.com/ChunhuanLin/deform_conv_pytorch), thanks to ChunhuanLin.
 
@@ -24,14 +24,16 @@ class ConvNet(nn.Module):
     self.avg_pool = nn.AdaptiveAvgPool2d(1)
 
     self.conv1 = nn.Conv2d(3, 32, 3, padding=1)
+    self.bn1 = nn.BatchNorm2d(32)
     self.conv2 = nn.DeformConv2d(32, 64, 3, padding=1, modulation=True)
+    self.bn2 = nn.BatchNorm2d(64)
 
     self.fc = nn.Linear(64, 10)
 
   def forward(self, x):
-    x = self.relu(self.conv1(x))
+    x = self.relu(self.bn1(self.conv1(x)))
     x = self.pool(x)
-    x = self.relu(self.conv2(x))
+    x = self.relu(self.bn2(self.conv2(x)))
 
     x = self.avg_pool(x)
     x = x.view(x.shape[0], -1)
