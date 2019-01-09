@@ -1,7 +1,5 @@
-from torch.autograd import Variable, Function
 import torch
 from torch import nn
-import numpy as np
 
 
 class DeformConv2d(nn.Module):
@@ -49,13 +47,13 @@ class DeformConv2d(nn.Module):
 
         # (b, h, w, 2N)
         p = p.contiguous().permute(0, 2, 3, 1)
-        q_lt = Variable(p.data, requires_grad=False).floor()
+        q_lt = p.detach().floor()
         q_rb = q_lt + 1
 
         q_lt = torch.cat([torch.clamp(q_lt[..., :N], 0, x.size(2)-1), torch.clamp(q_lt[..., N:], 0, x.size(3)-1)], dim=-1).long()
         q_rb = torch.cat([torch.clamp(q_rb[..., :N], 0, x.size(2)-1), torch.clamp(q_rb[..., N:], 0, x.size(3)-1)], dim=-1).long()
-        q_lb = torch.cat([q_lt[..., :N], q_rb[..., N:]], -1)
-        q_rt = torch.cat([q_rb[..., :N], q_lt[..., N:]], -1)
+        q_lb = torch.cat([q_lt[..., :N], q_rb[..., N:]], dim=-1)
+        q_rt = torch.cat([q_rb[..., :N], q_lt[..., N:]], dim=-1)
 
         # clip p
         p = torch.cat([torch.clamp(p[..., :N], 0, x.size(2)-1), torch.clamp(p[..., N:], 0, x.size(3)-1)], dim=-1)
