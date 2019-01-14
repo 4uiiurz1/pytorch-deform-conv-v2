@@ -7,6 +7,7 @@ This repository contains code for **Deformable ConvNets v2 (Modulated Deformable
  - [x] Learning rates of offset and modulation are set to different values from other layers
  - [x] Results of ScaledMNIST experiments
  - [x] Support different stride
+ - [ ] Support deformable group
  - [ ] DeepLab + DCNv2
  - [ ] Results of VOC segmentation experiments
 
